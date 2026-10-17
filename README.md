@@ -1,3 +1,18 @@
+<div align="center">
+
+# 🔄 Refund-
+
+> Idempotent dispute resolution middleware and automated refund lifecycle manager with audit trail ledgering.
+
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+[![Architecture](https://img.shields.io/badge/Architecture-ACID%20%7C%20Audit--Logged-2ea44f)](#)
+[![Stack](https://img.shields.io/badge/Stack-TypeScript%20%7C%20Go-blue)](#)
+[![Sponsor](https://img.shields.io/badge/Sponsor-DeborahPanzer-ea4aaa?logo=github-sponsors&logoColor=white)](https://github.com/sponsors/DeborahPanzer)
+
+</div>
+
+---
+
 # Refund Management System
 
 > A structured refund module for Checkout and Payout platforms, supporting full refunds, partial refunds, approval workflows, Stripe Connect reversals, balance adjustments, and financial audit trails.
@@ -1374,3 +1389,13 @@ stripe trigger charge.refunded
 ## License
 
 This project is intended for educational, demonstration, and architecture prototyping purposes.
+---
+
+## 💖 Sponsorship & Maintenance
+
+Building and maintaining automated refund and chargeback tooling requires continuous integration testing against complex dispute lifecycle webhooks and mock banking sandboxes.
+
+If this architecture or codebase assists your financial infrastructure:
+
+👉 **[Support ongoing open-source development via GitHub Sponsors](https://github.com/sponsors/DeborahPanzer)**
+
