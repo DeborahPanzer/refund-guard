@@ -1,12 +1,12 @@
 <div align="center">
 
-# 🔄 Refund-
+# 🔄 refund-guard
 
 > Idempotent dispute resolution middleware and automated refund lifecycle manager with audit trail ledgering.
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![Architecture](https://img.shields.io/badge/Architecture-ACID%20%7C%20Audit--Logged-2ea44f)](#)
-[![Stack](https://img.shields.io/badge/Stack-TypeScript%20%7C%20Go-blue)](#)
+[![Stack](https://img.shields.io/badge/Stack-TypeScript%20%7C%20Node.js-blue)](#)
 [![Sponsor](https://img.shields.io/badge/Sponsor-DeborahPanzer-ea4aaa?logo=github-sponsors&logoColor=white)](https://github.com/sponsors/DeborahPanzer)
 
 </div>
@@ -725,47 +725,49 @@ Response:
 
 ## 10. Stripe Integration
 
-### 10.1 Basic Stripe Refund
-
+### 10.1 Standard Stripe Refund Execution
 ```ts
-const refund = await stripe.refunds.create(
-  {
-    payment_intent: payment.stripePaymentIntentId,
-    amount: approvedAmount,
-    reason: "requested_by_customer",
-    metadata: {
-      orderId: order.id,
-      paymentId: payment.id,
-      refundRequestId: refundRequest.id,
+import Stripe from "stripe";
+
+const stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: "2023-10-16" });
+
+export async function executeStripeRefund(paymentIntentId: string, amountMinor: number, refundRequestId: string) {
+  return await stripeClient.refunds.create(
+    {
+      payment_intent: paymentIntentId,
+      amount: amountMinor,
+      reason: "requested_by_customer",
+      metadata: {
+        refundRequestId,
+      },
     },
-  },
-  {
-    idempotencyKey: `refund:${refundRequest.id}`,
-  },
-);
-```
+    {
+      idempotencyKey: `refund_exec_${refundRequestId}`,
+    }
+  );
+}
+
 
 ### 10.2 Stripe Connect Refund
 
 For destination charges:
 
-```ts
-const refund = await stripe.refunds.create(
-  {
-    payment_intent: payment.stripePaymentIntentId,
-    amount: approvedAmount,
-    reverse_transfer: true,
-    refund_application_fee: true,
-    metadata: {
-      orderId: order.id,
-      refundRequestId: refundRequest.id,
+export async function executeConnectTransferReversal(paymentIntentId: string, amountMinor: number, refundRequestId: string) {
+  return await stripeClient.refunds.create(
+    {
+      payment_intent: paymentIntentId,
+      amount: amountMinor,
+      reverse_transfer: true,
+      refund_application_fee: true,
+      metadata: {
+        refundRequestId,
+      },
     },
-  },
-  {
-    idempotencyKey: `refund:${refundRequest.id}`,
-  },
-);
-```
+    {
+      idempotencyKey: `connect_rev_${refundRequestId}`,
+    }
+  );
+}
 
 ### 10.3 Charge Model Considerations
 
@@ -1385,17 +1387,19 @@ stripe trigger charge.refunded
    The system must preserve enough data to safely retry, reconcile, or manually resolve failed operations.
 
 ---
+---
 
-## License
+## License & Compliance
 
-This project is intended for educational, demonstration, and architecture prototyping purposes.
+Distributed under the Apache 2.0 License. Designed for enterprise financial architecture prototyping.
+
 ---
 
 ## 💖 Sponsorship & Maintenance
 
-Building and maintaining automated refund and chargeback tooling requires continuous integration testing against complex dispute lifecycle webhooks and mock banking sandboxes.
+Building and maintaining robust fintech dispute and refund infrastructure requires continuous integration testing against complex banking sandboxes and webhook event streams.
 
-If this architecture or codebase assists your financial infrastructure:
+If this repository supports your open-source infrastructure:
 
 👉 **[Support ongoing open-source development via GitHub Sponsors](https://github.com/sponsors/DeborahPanzer)**
 
