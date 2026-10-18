@@ -1,0 +1,23 @@
+{
+  "name": "@deborahpanzer/refund-guard",
+  "version": "1.1.0",
+  "description": "Idempotent refund and chargeback management middleware with audit logging, dispute state synchronization, and automated ledger reconciliation.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "dev": "tsc --watch",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "node --test"
+  },
+  "keywords": [
+    "fintech",
+    "refund-guard",
+    "chargeback",
+    "dispute-mitigation",
+    "audit-log",
+    "ledger"
+  ],
+  "author": "Deborah Panzer",
+  "license": "Apache-2.0"
+}
